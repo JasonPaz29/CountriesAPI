@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Countries API Landing Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 80vh;
+        }
+        .globe-container {
+            width: 220px;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+        .globe {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 60% 40%, #90caf9 60%, #1976d2 100%);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            position: relative;
+            animation: spin 3s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .search-bar {
+            display: none;
+            flex-direction: row;
+            align-items: center;
+            background: rgba(255,255,255,0.25);
+            box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.17);
+            border-radius: 20px;
+            padding: 12px 24px;
+            backdrop-filter: blur(8px);
+            margin-top: 20px;
+            width: 350px;
+        }
+        .search-bar input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: #1976d2;
+            font-size: 1.1em;
+            outline: none;
+            padding: 8px;
+        }
+        .filter-btn {
+            background: rgba(255,255,255,0.35);
+            border: none;
+            border-radius: 12px;
+            padding: 8px 14px;
+            margin-left: 10px;
+            color: #1976d2;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.17);
+        }
+        .compare-btn {
+            background: rgba(255,255,255,0.35);
+            border: none;
+            border-radius: 12px;
+            padding: 8px 18px;
+            margin-top: 18px;
+            color: #1976d2;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.17);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(30, 136, 229, 0.15);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: rgba(255,255,255,0.7);
+            border-radius: 18px;
+            padding: 32px 28px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.27);
+            min-width: 350px;
+            max-width: 90vw;
+        }
+        .modal-header {
+            font-size: 1.2em;
+            color: #1976d2;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .modal-search {
+            display: flex;
+            margin-bottom: 18px;
+        }
+        .modal-search input {
+            flex: 1;
+            border: none;
+            background: rgba(255,255,255,0.5);
+            border-radius: 10px;
+            padding: 8px;
+            font-size: 1em;
+            color: #1976d2;
+            outline: none;
+        }
+        .selected-countries {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .country-card {
+            background: rgba(144,202,249,0.3);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: #1976d2;
+            font-size: 0.95em;
+            min-width: 80px;
+            text-align: center;
+        }
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .stats-table th, .stats-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #90caf9;
+            text-align: center;
+        }
+        .stats-table th {
+            background: rgba(144,202,249,0.2);
+            color: #1976d2;
+        }
+        .close-modal {
+            float: right;
+            font-size: 1.2em;
+            color: #1976d2;
+            cursor: pointer;
+            margin-top: -10px;
+            margin-right: -10px;
+        }
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 18px 0 10px 0;
+            background: rgba(255,255,255,0.25);
+            color: #1976d2;
+            font-size: 1em;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 -2px 8px 0 rgba(31, 38, 135, 0.07);
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <div class="globe-container" id="globeContainer">
+            <div class="globe"></div>
+        </div>
+        <div class="search-bar" id="searchBar">
+            <input type="text" placeholder="Search country name..." />
+            <button class="filter-btn" id="filterBtn">Filter</button>
+        </div>
+        <button class="compare-btn" id="compareBtn">Compare</button>
+    </div>
+    <div class="modal" id="compareModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div class="modal-header">Compare Countries</div>
+            <div class="modal-search">
+                <input type="text" placeholder="Which countries do you want to compare? (max 4)" />
+            </div>
+            <div class="selected-countries" id="selectedCountries">
+                <!-- Selected country cards will appear here -->
+            </div>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Country</th>
+                        <th>Population</th>
+                        <th>GDP</th>
+                        <th>Language</th>
+                    </tr>
+                </thead>
+                <tbody id="compareStats">
+                    <!-- Comparison stats will appear here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer>
+        All data UN Data &nbsp;|&nbsp; Created by Jason Paz-Romero and Sriram Joshi
+    </footer>
+    <script>
+        // Show search bar on globe click
+        document.getElementById('globeContainer').onclick = function() {
+            document.getElementById('searchBar').style.display = 'flex';
+        };
+        // Show compare modal
+        document.getElementById('compareBtn').onclick = function() {
+            document.getElementById('compareModal').style.display = 'flex';
+        };
+        // Close compare modal
+        document.getElementById('closeModal').onclick = function() {
+            document.getElementById('compareModal').style.display = 'none';
+        };
+        // Filter button click (placeholder)
+        document.getElementById('filterBtn').onclick = function() {
+            alert('Filter options: Population, GDP, Language (Low-High, High-Low)');
+        };
+    </script>
+</body>
+</html>

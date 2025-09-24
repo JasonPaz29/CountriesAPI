@@ -1,0 +1,193 @@
+country_name,capital,population,region,gdp_billion_usd,currency,languages,major_cities,hdi_value,development_class
+Afghanistan,Kabul,39835428,Asia,14.8,Afghan afghani,Pashto;Dari,Kabul;Kandahar;Herat,0.478,Low
+Albania,Tirana,2793592,Europe,18.3,Albanian lek,Albanian,Tirana;Durres;Vlore,0.796,High
+Algeria,Algiers,44903225,Africa,191.9,Algerian dinar,Arabic;Berber,Algiers;Oran;Constantine,0.745,High
+Andorra,Andorra la Vella,79824,Europe,3.2,Euro,Catalan,Andorra la Vella;Escaldes-Engordany,0.858,Very High
+Angola,Luanda,33933610,Africa,124.2,Angolan kwanza,Portuguese,Luanda;Benguela;Huambo,0.586,Medium
+Antigua and Barbuda,St. John's,98731,Americas,1.9,East Caribbean dollar,English,St. John's;All Saints,0.788,High
+Argentina,Buenos Aires,45605826,Americas,487.2,Argentine peso,Spanish,Buenos Aires;Cordoba;Rosario,0.842,Very High
+Armenia,Yerevan,2963234,Asia,19.5,Armenian dram,Armenian,Yerevan;Gyumri;Vanadzor,0.759,High
+Australia,Canberra,25687041,Oceania,1552.7,Australian dollar,English,Sydney;Melbourne;Brisbane,0.946,Very High
+Austria,Vienna,8917205,Europe,479.8,Euro,German,Vienna;Graz;Linz,0.916,Very High
+Azerbaijan,Baku,10093121,Asia,54.6,Azerbaijani manat,Azerbaijani,Baku;Ganja;Sumqayit,0.745,High
+Bahamas,Nassau,393248,Americas,12.8,Bahamian dollar,English,Nassau;Lucaya;Freeport,0.812,Very High
+Bahrain,Manama,1701583,Asia,44.4,Bahraini dinar,Arabic,Manama;Muharraq;Hamad,0.875,Very High
+Bangladesh,Dhaka,164689383,Asia,460.8,Bangladeshi taka,Bengali,Dhaka;Chittagong;Khulna,0.661,Medium
+Barbados,Bridgetown,287371,Americas,5.4,Barbadian dollar,English,Bridgetown;Speightstown,0.790,High
+Belarus,Minsk,9449321,Europe,71.7,Belarusian ruble,Belarusian;Russian,Minsk;Gomel;Mogilev,0.808,Very High
+Belgium,Brussels,11592952,Europe,529.6,Euro,Dutch;French;German,Brussels;Antwerp;Ghent,0.937,Very High
+Belize,Belmopan,397621,Americas,2.4,Belize dollar,English,Belize City;San Ignacio;Belmopan,0.683,Medium
+Benin,Porto-Novo,12123198,Africa,17.4,West African CFA franc,French,Cotonou;Abomey-Calavi;Djougou,0.525,Low
+Bhutan,Thimphu,771612,Asia,2.5,Bhutanese ngultrum,Dzongkha,Thimphu;Phuntsholing;Punakha,0.666,Medium
+Bolivia,Sucre,11832940,Americas,43.0,Bolivian boliviano,Spanish;Quechua;Aymara,Santa Cruz;La Paz;El Alto,0.692,Medium
+Bosnia and Herzegovina,Sarajevo,3280815,Europe,24.5,Bosnia and Herzegovina convertible mark,Bosnian;Croatian;Serbian,Sarajevo;Banja Luka;Tuzla,0.780,High
+Botswana,Gaborone,2351627,Africa,20.4,Botswana pula,English;Setswana,Gaborone;Francistown;Molepolole,0.693,Medium
+Brazil,Brasilia,215313498,Americas,2126.8,Brazilian real,Portuguese,Sao Paulo;Rio de Janeiro;Salvador,0.760,High
+Brunei,Bandar Seri Begawan,441532,Asia,15.1,Brunei dollar,Malay,Bandar Seri Begawan;Kuala Belait;Seria,0.829,Very High
+Bulgaria,Sofia,6934015,Europe,84.1,Bulgarian lev,Bulgarian,Sofia;Plovdiv;Varna,0.795,High
+Burkina Faso,Ouagadougou,21497096,Africa,19.7,West African CFA franc,French,Ouagadougou;Bobo-Dioulasso;Koudougou,0.449,Low
+Burundi,Gitega,11890781,Africa,3.0,Burundian franc,Kirundi;French,Bujumbura;Muyinga;Gitega,0.426,Low
+Cabo Verde,Praia,555988,Africa,2.1,Cape Verdean escudo,Portuguese,Praia;Mindelo;Santa Maria,0.662,Medium
+Cambodia,Phnom Penh,16718971,Asia,27.2,Cambodian riel,Khmer,Phnom Penh;Siem Reap;Battambang,0.593,Medium
+Cameroon,Yaounde,27224265,Africa,45.2,Central African CFA franc,French;English,Douala;Yaounde;Garoua,0.576,Medium
+Canada,Ottawa,38654738,Americas,2139.8,Canadian dollar,English;French,Toronto;Montreal;Vancouver,0.936,Very High
+Central African Republic,Bangui,4829764,Africa,2.4,Central African CFA franc,French;Sango,Bangui;Bimbo;Berbérati,0.397,Low
+Chad,N'Djamena,16425859,Africa,11.3,Central African CFA franc,French;Arabic,N'Djamena;Moundou;Sarh,0.394,Low
+Chile,Santiago,19116209,Americas,317.1,Chilean peso,Spanish,Santiago;Valparaiso;Concepcion,0.855,Very High
+China,Beijing,1439323776,Asia,17734.1,Chinese yuan,Mandarin Chinese,Shanghai;Beijing;Chongqing,0.768,High
+Colombia,Bogota,50882884,Americas,314.5,Colombian peso,Spanish,Bogota;Medellin;Cali,0.752,High
+Comoros,Moroni,869595,Africa,1.3,Comorian franc,Comorian;Arabic;French,Moroni;Mutsamudu;Fomboni,0.558,Medium
+Congo,Brazzaville,5518092,Africa,12.4,Central African CFA franc,French,Brazzaville;Pointe-Noire;Dolisie,0.606,Medium
+Costa Rica,San Jose,5094114,Americas,64.3,Costa Rican colon,Spanish,San Jose;Cartago;Puntarenas,0.809,Very High
+Croatia,Zagreb,3888529,Europe,70.4,Euro,Croatian,Zagreb;Split;Rijeka,0.858,Very High
+Cuba,Havana,11317505,Americas,107.4,Cuban peso,Spanish,Havana;Santiago de Cuba;Holguin,0.764,High
+Cyprus,Nicosia,1207361,Europe,27.7,Euro,Greek;Turkish,Nicosia;Limassol;Larnaca,0.896,Very High
+Czech Republic,Prague,10708981,Europe,290.9,Czech koruna,Czech,Prague;Brno;Ostrava,0.891,Very High
+Denmark,Copenhagen,5831404,Europe,390.7,Danish krone,Danish,Copenhagen;Aarhus;Odense,0.948,Very High
+Djibouti,Djibouti,988002,Africa,3.6,Djiboutian franc,French;Arabic,Djibouti;Ali Sabieh;Tadjourah,0.509,Low
+Dominica,Roseau,71991,Americas,0.6,East Caribbean dollar,English,Roseau;Portsmouth;Marigot,0.720,High
+Dominican Republic,Santo Domingo,10847904,Americas,113.0,Dominican peso,Spanish,Santo Domingo;Santiago;La Vega,0.767,High
+Ecuador,Quito,17643060,Americas,115.0,US Dollar,Spanish,Guayaquil;Quito;Cuenca,0.740,High
+Egypt,Cairo,102334403,Africa,469.1,Egyptian pound,Arabic,Cairo;Alexandria;Giza,0.731,High
+El Salvador,San Salvador,6486201,Americas,28.7,US Dollar,Spanish,San Salvador;Soyapango;Santa Ana,0.675,Medium
+Equatorial Guinea,Malabo,1402985,Africa,10.0,Central African CFA franc,Spanish;French;Portuguese,Malabo;Bata;Ebebiyin,0.596,Medium
+Eritrea,Asmara,3546421,Africa,2.1,Eritrean nakfa,Tigrinya;Arabic;English,Asmara;Keren;Massawa,0.492,Low
+Estonia,Tallinn,1326535,Europe,37.2,Euro,Estonian,Tallinn;Tartu;Narva,0.890,Very High
+Eswatini,Mbabane,1160164,Africa,4.7,Swazi lilangeni,English;siSwati,Manzini;Mbabane;Big Bend,0.597,Medium
+Ethiopia,Addis Ababa,117876227,Africa,111.3,Ethiopian birr,Amharic,Addis Ababa;Dire Dawa;Mek'ele,0.498,Low
+Fiji,Suva,896444,Oceania,5.5,Fijian dollar,English;Fijian;Hindi,Suva;Nasinu;Lautoka,0.730,High
+Finland,Helsinki,5540718,Europe,297.3,Euro,Finnish;Swedish,Helsinki;Espoo;Tampere,0.942,Very High
+France,Paris,65273511,Europe,2937.5,Euro,French,Paris;Marseille;Lyon,0.903,Very High
+Gabon,Libreville,2225728,Africa,20.2,Central African CFA franc,French,Libreville;Port-Gentil;Franceville,0.706,High
+Gambia,Banjul,2416664,Africa,2.0,Dalasi,English,Serekunda;Brikama;Bakau,0.500,Low
+Georgia,Tbilisi,3989175,Asia,18.6,Georgian lari,Georgian,Tbilisi;Kutaisi;Batumi,0.802,Very High
+Germany,Berlin,83783942,Europe,4223.1,Euro,German,Berlin;Hamburg;Munich,0.947,Very High
+Ghana,Accra,31072945,Africa,76.0,Ghanaian cedi,English,Accra;Kumasi;Tamale,0.632,Medium
+Greece,Athens,10423054,Europe,189.4,Euro,Greek,Athens;Thessaloniki;Patras,0.887,Very High
+Grenada,St. George's,112519,Americas,1.2,East Caribbean dollar,English,St. George's;Gouyave;Grenville,0.779,High
+Guatemala,Guatemala City,16858333,Americas,85.3,Guatemalan quetzal,Spanish,Guatemala City;Villa Nueva;Mixco,0.627,Medium
+Guinea,Conakry,13132792,Africa,16.1,Guinean franc,French,Conakry;Nzerekore;Kankan,0.465,Low
+Guinea-Bissau,Bissau,1968001,Africa,1.3,West African CFA franc,Portuguese,Bissau;Gabu;Bafata,0.483,Low
+Guyana,Georgetown,786559,Americas,9.9,Guyanese dollar,English,Georgetown;Linden;New Amsterdam,0.714,High
+Haiti,Port-au-Prince,11402533,Americas,8.4,Haitian gourde,French;Haitian Creole,Port-au-Prince;Cap-Haitien;Delmas,0.535,Low
+Honduras,Tegucigalpa,9904608,Americas,28.5,Honduran lempira,Spanish,Tegucigalpa;San Pedro Sula;Choloma,0.621,Medium
+Hungary,Budapest,9660351,Europe,181.8,Hungarian forint,Hungarian,Budapest;Debrecen;Szeged,0.854,Very High
+Iceland,Reykjavik,341250,Europe,25.6,Icelandic krona,Icelandic,Reykjavik;Kopavogur;Hafnarfjordur,0.959,Very High
+India,New Delhi,1380004385,Asia,3176.3,Indian rupee,Hindi;English,Mumbai;Delhi;Bangalore,0.645,Medium
+Indonesia,Jakarta,273523621,Asia,1289.4,Indonesian rupiah,Indonesian,Jakarta;Surabaya;Medan,0.705,High
+Iran,Tehran,83992953,Asia,231.3,Iranian rial,Persian,Tehran;Mashhad;Isfahan,0.774,High
+Iraq,Baghdad,40222503,Asia,264.2,Iraqi dinar,Arabic;Kurdish,Baghdad;Basra;Mosul,0.686,Medium
+Ireland,Dublin,4937796,Europe,498.6,Euro,Irish;English,Dublin;Cork;Limerick,0.945,Very High
+Israel,Jerusalem,9216900,Asia,481.6,Israeli new shekel,Hebrew;Arabic,Jerusalem;Tel Aviv;Haifa,0.919,Very High
+Italy,Rome,60461828,Europe,2107.7,Euro,Italian,Rome;Milan;Naples,0.895,Very High
+Jamaica,Kingston,2961161,Americas,16.5,Jamaican dollar,English,Kingston;Spanish Town;Portmore,0.709,High
+Japan,Tokyo,126476458,Asia,4231.1,Japanese yen,Japanese,Tokyo;Yokohama;Osaka,0.925,Very High
+Jordan,Amman,10203140,Asia,47.7,Jordanian dinar,Arabic,Amman;Zarqa;Irbid,0.723,High
+Kazakhstan,Nur-Sultan,18776707,Asia,197.1,Kazakhstani tenge,Kazakh;Russian,Almaty;Shymkent;Nur-Sultan,0.811,Very High
+Kenya,Nairobi,53771300,Africa,110.3,Kenyan shilling,English;Swahili,Nairobi;Mombasa;Kisumu,0.601,Medium
+Kiribati,Tarawa,119446,Oceania,0.2,Australian dollar,English;Gilbertese,South Tarawa;Betio,0.624,Medium
+Kuwait,Kuwait City,4270563,Asia,134.6,Kuwaiti dinar,Arabic,Kuwait City;Al Ahmadi;Hawalli,0.831,Very High
+Kyrgyzstan,Bishkek,6524191,Asia,8.5,Kyrgyzstani som,Kyrgyz;Russian,Bishkek;Osh;Jalal-Abad,0.697,Medium
+Laos,Vientiane,7275556,Asia,19.1,Lao kip,Lao,Vientiane;Savannakhet;Pakse,0.607,Medium
+Latvia,Riga,1886202,Europe,38.3,Euro,Latvian,Riga;Daugavpils;Liepaja,0.866,Very High
+Lebanon,Beirut,6825442,Asia,21.8,Lebanese pound,Arabic,Beirut;Tripoli;Sidon,0.706,High
+Lesotho,Maseru,2142252,Africa,2.5,Lesotho loti,English;Sesotho,Maseru;Teyateyaneng;Mafeteng,0.514,Low
+Liberia,Monrovia,5057677,Africa,3.3,Liberian dollar,English,Monrovia;Gbarnga;Kakata,0.481,Low
+Libya,Tripoli,6871287,Africa,25.4,Libyan dinar,Arabic,Tripoli;Benghazi;Misrata,0.718,High
+Liechtenstein,Vaduz,38137,Europe,6.6,Swiss franc,German,Vaduz;Schaan;Balzers,0.935,Very High
+Lithuania,Vilnius,2722291,Europe,65.5,Euro,Lithuanian,Vilnius;Kaunas;Klaipeda,0.875,Very High
+Luxembourg,Luxembourg,625976,Europe,73.4,Euro,Luxembourgish;French;German,Luxembourg;Esch-sur-Alzette;Dudelange,0.930,Very High
+Madagascar,Antananarivo,27691019,Africa,14.4,Malagasy ariary,Malagasy;French,Antananarivo;Toamasina;Antsirabe,0.528,Low
+Malawi,Lilongwe,19129955,Africa,7.5,Malawian kwacha,English;Chichewa,Lilongwe;Blantyre;Mzuzu,0.512,Low
+Malaysia,Kuala Lumpur,32365998,Asia,404.3,Malaysian ringgit,Malay,Kuala Lumpur;George Town;Ipoh,0.803,Very High
+Maldives,Male,540542,Asia,5.7,Maldivian rufiyaa,Dhivehi,Male;Addu City;Fuvahmulah,0.747,High
+Mali,Bamako,20250834,Africa,17.5,West African CFA franc,French,Bamako;Sikasso;Mopti,0.434,Low
+Malta,Valletta,441539,Europe,17.3,Euro,Maltese;English,Birkirkara;Qormi;Mosta,0.895,Very High
+Marshall Islands,Majuro,59194,Oceania,0.2,US Dollar,Marshallese;English,Majuro;Ebeye;Arno,0.704,High
+Mauritania,Nouakchott,4649660,Africa,8.1,Mauritanian ouguiya,Arabic,Nouakchott;Nouadhibou;Nema,0.556,Medium
+Mauritius,Port Louis,1271767,Africa,14.0,Mauritian rupee,English;French,Port Louis;Beau Bassin-Rose Hill;Vacoas,0.804,Very High
+Mexico,Mexico City,128932753,Americas,1293.8,Mexican peso,Spanish,Mexico City;Ecatepec;Guadalajara,0.758,High
+Micronesia,Palikir,548914,Oceania,0.4,US Dollar,English,Weno;Palikir;Tofol,0.620,Medium
+Moldova,Chisinau,4033963,Europe,13.7,Moldovan leu,Romanian,Chisinau;Tiraspol;Balti,0.750,High
+Monaco,Monaco,39244,Europe,7.7,Euro,French,Monaco,0.956,Very High
+Mongolia,Ulaanbaatar,3278292,Asia,15.3,Mongolian tugrik,Mongolian,Ulaanbaatar;Erdenet;Darkhan,0.739,High
+Montenegro,Podgorica,628062,Europe,5.8,Euro,Montenegrin,Podgorica;Niksic;Pljevlja,0.832,Very High
+Morocco,Rabat,36910558,Africa,132.7,Moroccan dirham,Arabic;Berber,Casablanca;Rabat;Fes,0.683,Medium
+Mozambique,Maputo,31255435,Africa,15.9,Mozambican metical,Portuguese,Maputo;Matola;Beira,0.456,Low
+Myanmar,Naypyidaw,54409794,Asia,71.2,Myanmar kyat,Burmese,Yangon;Mandalay;Naypyidaw,0.585,Medium
+Namibia,Windhoek,2540916,Africa,12.4,Namibian dollar,English,Windhoek;Rundu;Walvis Bay,0.615,Medium
+Nauru,Yaren,10834,Oceania,0.1,Australian dollar,Nauruan;English,Yaren;Aiwo;Buada,0.717,High
+Nepal,Kathmandu,29136808,Asia,36.3,Nepalese rupee,Nepali,Kathmandu;Pokhara;Lalitpur,0.602,Medium
+Netherlands,Amsterdam,17134873,Europe,909.9,Euro,Dutch,Amsterdam;Rotterdam;The Hague,0.944,Very High
+New Zealand,Wellington,4822233,Oceania,249.9,New Zealand dollar,English,Auckland;Christchurch;Wellington,0.937,Very High
+Nicaragua,Managua,6624554,Americas,13.8,Nicaraguan cordoba,Spanish,Managua;Leon;Masaya,0.660,Medium
+Niger,Niamey,24206636,Africa,13.9,West African CFA franc,French,Niamey;Zinder;Maradi,0.394,Low
+Nigeria,Abuja,206139587,Africa,432.3,Nigerian naira,English,Lagos;Kano;Ibadan,0.535,Low
+North Korea,Pyongyang,25778815,Asia,32.1,North Korean won,Korean,Pyongyang;Hamhung;Chongjin,0.650,Medium
+North Macedonia,Skopje,2083380,Europe,13.8,Macedonian denar,Macedonian,Skopje;Kumanovo;Prilep,0.770,High
+Norway,Oslo,5421242,Europe,482.2,Norwegian krone,Norwegian,Oslo;Bergen;Stavanger,0.961,Very High
+Oman,Muscat,5106622,Asia,84.2,Omani rial,Arabic,Muscat;Salalah;Seeb,0.816,Very High
+Pakistan,Islamabad,220892331,Asia,347.0,Pakistani rupee,Urdu;English,Karachi;Lahore;Faisalabad,0.544,Low
+Palau,Ngerulmud,18092,Oceania,0.3,US Dollar,Palauan;English,Koror;Airai;Ngerulmud,0.826,Very High
+Panama,Panama City,4314768,Americas,71.0,Panamanian balboa,Spanish,Panama City;San Miguelito;Tocumen,0.805,Very High
+Papua New Guinea,Port Moresby,8947027,Oceania,25.5,Papua New Guinean kina,English,Port Moresby;Lae;Mount Hagen,0.558,Medium
+Paraguay,Asuncion,7132530,Americas,40.7,Paraguayan guarani,Spanish;Guarani,Asuncion;Ciudad del Este;San Lorenzo,0.717,High
+Peru,Lima,32971846,Americas,202.0,Peruvian sol,Spanish,Lima;Arequipa;Trujillo,0.762,High
+Philippines,Manila,109581085,Asia,376.8,Philippine peso,Filipino;English,Quezon City;Manila;Caloocan,0.718,High
+Poland,Warsaw,37846605,Europe,679.4,Polish zloty,Polish,Warsaw;Krakow;Lodz,0.876,Very High
+Portugal,Lisbon,10196707,Europe,253.0,Euro,Portuguese,Lisbon;Porto;Vila Nova de Gaia,0.866,Very High
+Qatar,Doha,2881060,Asia,179.0,Qatari riyal,Arabic,Doha;Al Rayyan;Umm Salal,0.855,Very High
+Romania,Bucharest,19237682,Europe,248.7,Romanian leu,Romanian,Bucharest;Cluj-Napoca;Timisoara,0.821,Very High
+Russia,Moscow,145912025,Europe,1483.5,Russian ruble,Russian,Moscow;Saint Petersburg;Novosibirsk,0.824,Very High
+Rwanda,Kigali,12952209,Africa,11.1,Rwandan franc,Kinyarwanda;French;English,Kigali;Butare;Gitarama,0.534,Low
+Saint Kitts and Nevis,Basseterre,53192,Americas,1.0,East Caribbean dollar,English,Basseterre;Charlestown;Dieppe Bay,0.777,High
+Saint Lucia,Castries,183629,Americas,2.1,East Caribbean dollar,English,Castries;Bisee;Vieux Fort,0.715,High
+Saint Vincent and the Grenadines,Kingstown,110947,Americas,0.8,East Caribbean dollar,English,Kingstown;Georgetown;Barrouallie,0.728,High
+Samoa,Apia,198410,Oceania,0.9,Samoan tala,Samoan;English,Apia;Asau;Mulifanua,0.707,High
+San Marino,San Marino,33938,Europe,1.9,Euro,Italian,Serravalle;Borgo Maggiore;San Marino,0.853,Very High
+Sao Tome and Principe,Sao Tome,219161,Africa,0.5,Sao Tome and Principe dobra,Portuguese,Sao Tome;Santo Antonio;Neves,0.618,Medium
+Saudi Arabia,Riyadh,34813867,Asia,833.5,Saudi riyal,Arabic,Riyadh;Jeddah;Mecca,0.854,Very High
+Senegal,Dakar,16743930,Africa,27.6,West African CFA franc,French,Dakar;Touba;Thies,0.511,Low
+Serbia,Belgrade,8737370,Europe,63.1,Serbian dinar,Serbian,Belgrade;Novi Sad;Nis,0.802,Very High
+Seychelles,Victoria,98462,Africa,1.7,Seychellois rupee,English;French;Seychellois Creole,Victoria;Anse Boileau;Beau Vallon,0.796,High
+Sierra Leone,Freetown,7976985,Africa,4.1,Sierra Leonean leone,English,Freetown;Bo;Kenema,0.477,Low
+Singapore,Singapore,5850343,Asia,372.1,Singapore dollar,English;Malay;Mandarin;Tamil,Singapore,0.938,Very High
+Slovakia,Bratislava,5459643,Europe,115.2,Euro,Slovak,Bratislava;Kosice;Presov,0.848,Very High
+Slovenia,Ljubljana,2078932,Europe,57.0,Euro,Slovene,Ljubljana;Maribor;Celje,0.918,Very High
+Solomon Islands,Honiara,686878,Oceania,1.6,Solomon Islands dollar,English,Honiara;Gizo;Auki,0.567,Medium
+Somalia,Mogadishu,15893219,Africa,4.9,Somali shilling,Somali;Arabic,Mogadishu;Hargeisa;Bosaso,0.361,Low
+South Africa,Cape Town,59308690,Africa,419.0,South African rand,Afrikaans;English;Zulu,Cape Town;Johannesburg;Durban,0.709,High
+South Korea,Seoul,51269183,Asia,1811.0,South Korean won,Korean,Seoul;Busan;Incheon,0.925,Very High
+South Sudan,Juba,11193729,Africa,3.1,South Sudanese pound,English,Juba;Winejok;Malakal,0.385,Low
+Spain,Madrid,46754783,Europe,1394.1,Euro,Spanish,Madrid;Barcelona;Valencia,0.905,Very High
+Sri Lanka,Sri Jayawardenepura Kotte,21413250,Asia,84.0,Sri Lankan rupee,Sinhala;Tamil,Colombo;Dehiwala-Mount Lavinia;Moratuwa,0.782,High
+Sudan,Khartoum,43849269,Africa,34.3,Sudanese pound,Arabic;English,Khartoum;Omdurman;Port Sudan,0.508,Low
+Suriname,Paramaribo,586634,Americas,3.7,Surinamese dollar,Dutch,Paramaribo;Lelydorp;Nieuw Nickerie,0.730,High
+Sweden,Stockholm,10099270,Europe,635.7,Swedish krona,Swedish,Stockholm;Gothenburg;Malmo,0.947,Very High
+Switzerland,Bern,8654618,Europe,812.9,Swiss franc,German;French;Italian,Zurich;Geneva;Basel,0.962,Very High
+Syria,Damascus,17500657,Asia,40.4,Syrian pound,Arabic,Aleppo;Damascus;Homs,0.567,Medium
+Tajikistan,Dushanbe,9537642,Asia,8.5,Tajikistani somoni,Tajik,Dushanbe;Khujand;Kulob,0.650,Medium
+Tanzania,Dodoma,59734213,Africa,67.8,Tanzanian shilling,Swahili;English,Dar es Salaam;Mwanza;Arusha,0.529,Low
+Thailand,Bangkok,69799978,Asia,543.5,Thai baht,Thai,Bangkok;Samut Prakan;Mueang Nonthaburi,0.777,High
+Timor-Leste,Dili,1318442,Asia,1.7,US Dollar,Tetum;Portuguese,Dili;Dare;Baucau,0.607,Medium
+Togo,Lome,8278737,Africa,8.0,West African CFA franc,French,Lome;Sokode;Kara,0.515,Low
+Tonga,Nuku'alofa,105697,Oceania,0.5,Tongan pa'anga,Tongan;English,Nuku'alofa;Neiafu;Haveluloto,0.725,High
+Trinidad and Tobago,Port of Spain,1399491,Americas,24.1,Trinidad and Tobago dollar,English,Chaguanas;San Fernando;Port of Spain,0.796,High
+Tunisia,Tunis,11818618,Africa,47.6,Tunisian dinar,Arabic,Tunis;Sfax;Sousse,0.740,High
+Turkey,Ankara,84339067,Asia,761.4,Turkish lira,Turkish,Istanbul;Ankara;Izmir,0.838,Very High
+Turkmenistan,Ashgabat,6031187,Asia,45.2,Turkmenistan manat,Turkmen,Ashgabat;Turkmenbashi;Dasoguz,0.745,High
+Tuvalu,Funafuti,11792,Oceania,0.1,Australian dollar,Tuvaluan;English,Funafuti;Asau;Savave,0.641,Medium
+Uganda,Kampala,45741000,Africa,48.1,Ugandan shilling,English;Swahili,Kampala;Gulu;Lira,0.544,Low
+Ukraine,Kyiv,43733759,Europe,200.1,Ukrainian hryvnia,Ukrainian,Kyiv;Kharkiv;Odesa,0.773,High
+United Arab Emirates,Abu Dhabi,9890400,Asia,507.5,UAE dirham,Arabic,Dubai;Abu Dhabi;Sharjah,0.911,Very High
+United Kingdom,London,67886004,Europe,3131.4,Pound sterling,English,London;Birmingham;Leeds,0.932,Very High
+United States,Washington D.C.,331002647,Americas,26854.6,US Dollar,English,New York;Los Angeles;Chicago,0.926,Very High
+Uruguay,Montevideo,3473727,Americas,59.3,Uruguayan peso,Spanish,Montevideo;Salto;Paysandu,0.817,Very High
+Uzbekistan,Tashkent,33469199,Asia,69.2,Uzbekistan som,Uzbek,Tashkent;Namangan;Samarkand,0.720,High
+Vanuatu,Port Vila,307150,Oceania,0.9,Vanuatu vatu,Bislama;English;French,Port Vila;Luganville;Isangel,0.609,Medium
+Vatican City,Vatican City,825,Europe,0.3,Euro,Italian;Latin,Vatican City,N/A,N/A
+Venezuela,Caracas,28435943,Americas,482.4,Venezuelan bolivar,Spanish,Caracas;Maracaibo;Valencia,0.711,High
+Vietnam,Hanoi,97338583,Asia,408.8,Vietnamese dong,Vietnamese,Ho Chi Minh City;Hanoi;Haiphong,0.703,High
+Yemen,Sana'a,29825968,Asia,21.6,Yemeni rial,Arabic,Sana'a;Aden;Taiz,0.470,Low
+Zambia,Lusaka,18383956,Africa,25.7,Zambian kwacha,English,Lusaka;Kitwe;Ndola,0.584,Medium
+Zimbabwe,Harare,14862927,Africa,26.2,Zimbabwean dollar,English;Shona;Ndebele,Harare;Bulawayo;Chitungwiza,0.571,Medium
