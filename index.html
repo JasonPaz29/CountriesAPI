@@ -38,7 +38,32 @@
             background: radial-gradient(circle at 60% 40%, #90caf9 60%, #1976d2 100%);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             position: relative;
-            animation: spin 3s linear infinite;
+            animation: spin 8s linear infinite;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+        /* globe sheen and subtle continent shapes (stylized) */
+        .globe::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.12), transparent 20%),
+                        radial-gradient(circle at 70% 70%, rgba(0,0,0,0.06), transparent 30%);
+            mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+        /* simple stylized continents layer (pure CSS shapes) */
+        .globe::after {
+            content: '';
+            position: absolute;
+            left: 10%; top: 18%;
+            width: 80%; height: 65%;
+            background-image: radial-gradient(circle at 18% 20%, rgba(255,255,255,0.06) 0 8%, transparent 9%),
+                              radial-gradient(circle at 40% 45%, rgba(255,255,255,0.04) 0 6%, transparent 7%);
+            border-radius: 50%;
+            box-shadow: inset 0 0 0 6px rgba(0,0,0,0.02);
+            transform: translateZ(1px);
+            pointer-events: none;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -55,6 +80,35 @@
             backdrop-filter: blur(8px);
             margin-top: 20px;
             width: 350px;
+        }
+        .results-list {
+            position: absolute;
+            top: calc(50% + 120px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 380px;
+            max-height: 360px;
+            overflow: auto;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(31,38,135,0.12);
+            padding: 8px;
+            display: none;
+            z-index: 800;
+        }
+        .result-item {
+            padding: 8px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #0d47a1;
+            font-weight: 600;
+        }
+        .result-item:hover { background: rgba(25,118,210,0.06); }
+        .result-sub {
+            font-size: 0.9em;
+            font-weight: 500;
+            color: #1565c0;
+            opacity: 0.9;
         }
         .search-bar input {
             flex: 1;
@@ -213,23 +267,222 @@
     <footer>
         All data UN Data &nbsp;|&nbsp; Created by Jason Paz-Romero and Sriram Joshi
     </footer>
+    <!-- Dependencies: Fuse.js for fuzzy search, PapaParse for CSV parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
     <script>
+        // Elements
+        const globeContainer = document.getElementById('globeContainer');
+        const searchBar = document.getElementById('searchBar');
+        const compareBtn = document.getElementById('compareBtn');
+        const compareModal = document.getElementById('compareModal');
+        const closeModal = document.getElementById('closeModal');
+
+        // Dynamic elements
+        const searchInput = searchBar.querySelector('input');
+
+        // Results container (created dynamically)
+        let resultsList = document.createElement('div');
+        resultsList.className = 'results-list';
+        document.body.appendChild(resultsList);
+
+        // Data structures
+        let countries = []; // array of country objects loaded from CSV
+        let fuse = null;
+        let compareSelection = [];
+
         // Show search bar on globe click
-        document.getElementById('globeContainer').onclick = function() {
-            document.getElementById('searchBar').style.display = 'flex';
+        globeContainer.onclick = function() {
+            searchBar.style.display = 'flex';
+            searchInput.focus();
         };
-        // Show compare modal
-        document.getElementById('compareBtn').onclick = function() {
-            document.getElementById('compareModal').style.display = 'flex';
-        };
-        // Close compare modal
-        document.getElementById('closeModal').onclick = function() {
-            document.getElementById('compareModal').style.display = 'none';
-        };
-        // Filter button click (placeholder)
+
+        // Compare modal toggles
+        compareBtn.onclick = function() { compareModal.style.display = 'flex'; renderCompare(); };
+        closeModal.onclick = function() { compareModal.style.display = 'none'; };
+        window.addEventListener('click', (e) => {
+            if (e.target === compareModal) compareModal.style.display = 'none';
+        });
+
+        // Filter button (open a small quick filter UI)
         document.getElementById('filterBtn').onclick = function() {
-            alert('Filter options: Population, GDP, Language (Low-High, High-Low)');
+            const choice = prompt('Filter by: population, gdp, language, region (append :asc or :desc)\nExample: population:desc');
+            if (!choice) return;
+            const [keyRaw, orderRaw] = choice.split(':').map(s => s && s.trim());
+            const key = keyRaw && keyRaw.toLowerCase();
+            const order = (orderRaw || 'asc').toLowerCase();
+            if (!['population','gdp','language','region','name','capital'].includes(key)) { alert('Unknown filter key'); return; }
+            // sort countries locally and show top 30
+            const sorted = countries.slice().sort((a,b)=>{
+                const av = parseNumberForKey(a,key);
+                const bv = parseNumberForKey(b,key);
+                return order === 'desc' ? bv - av : av - bv;
+            });
+            showResults(sorted.slice(0, 60));
         };
+
+        function parseNumberForKey(obj,key){
+            if (!obj) return 0;
+            if (key==='population') return Number(obj.population) || 0;
+            if (key==='gdp') return Number(obj.gdp) || 0;
+            return 0;
+        }
+
+        // Load CSV data client-side using PapaParse
+        function loadCSV(){
+            Papa.parse('countries_data.csv', {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    countries = results.data.map(normalizeCountry);
+                    initFuse();
+                },
+                error: function(err){ console.error('CSV load error', err); }
+            });
+        }
+
+        function normalizeCountry(row){
+            // Normalize expected fields: name, population, gdp, capital, important_cities, languages, region
+            return {
+                name: row.name || row.country || row.Country || '',
+                population: row.population || row.Population || '',
+                gdp: row.gdp || row.GDP || row.gdp_usd || '',
+                capital: row.capital || row.Capital || '',
+                important_cities: row.important_cities || row.cities || row.Cities || '',
+                languages: row.languages || row.language || row.Language || '',
+                region: row.region || row.Region || '',
+                raw: row
+            };
+        }
+
+        function initFuse(){
+            const options = {
+                keys: [
+                    {name: 'name', weight: 0.35},
+                    {name: 'capital', weight: 0.15},
+                    {name: 'important_cities', weight: 0.12},
+                    {name: 'languages', weight: 0.18},
+                    {name: 'region', weight: 0.1},
+                    {name: 'population', weight: 0.04},
+                    {name: 'gdp', weight: 0.04}
+                ],
+                threshold: 0.35,
+                ignoreLocation: true,
+                includeMatches: true,
+                minMatchCharLength: 1
+            };
+            fuse = new Fuse(countries, options);
+        }
+
+        // Search handler (debounced)
+        let searchTimer = null;
+        searchInput.addEventListener('input', (e)=>{
+            clearTimeout(searchTimer);
+            const q = e.target.value.trim();
+            searchTimer = setTimeout(()=>{
+                if (!q){ resultsList.style.display='none'; return; }
+                performSearch(q);
+            }, 180);
+        });
+
+        function performSearch(q){
+            if (!fuse) { console.warn('Fuse not ready'); return; }
+            // Try numeric queries like population>10000000 or gdp<50000
+            const numericMatch = q.match(/(population|gdp)\s*([<>]=?|=)\s*([0-9,\.]+)/i);
+            if (numericMatch){
+                const key = numericMatch[1].toLowerCase();
+                const op = numericMatch[2];
+                const num = Number(numericMatch[3].replace(/,/g,''));
+                const filtered = countries.filter(c=>{
+                    const v = Number((key==='population'?c.population:c.gdp) || 0);
+                    if (op==='>') return v>num;
+                    if (op==='>=') return v>=num;
+                    if (op==='<') return v<num;
+                    if (op==='<=') return v<=num;
+                    return v===num;
+                });
+                showResults(filtered.slice(0,60));
+                return;
+            }
+
+            // Regular fuzzy search
+            const fuseRes = fuse.search(q, {limit: 60});
+            const items = fuseRes.map(r=>r.item);
+            showResults(items);
+        }
+
+        function showResults(list){
+            resultsList.innerHTML = '';
+            if (!list || !list.length){
+                const empty = document.createElement('div');
+                empty.className = 'result-item';
+                empty.textContent = 'No matches found';
+                resultsList.appendChild(empty);
+                resultsList.style.display = 'block';
+                return;
+            }
+            list.forEach(c=>{
+                const el = document.createElement('div');
+                el.className = 'result-item';
+                el.innerHTML = `<div>${escapeHtml(c.name || '—')}</div><div class='result-sub'>${escapeHtml(c.region || '')} • Pop: ${formatNumber(c.population)} • GDP: ${formatNumber(c.gdp)}</div>`;
+                el.onclick = ()=>{ openCountryCard(c); };
+                resultsList.appendChild(el);
+            });
+            resultsList.style.display = 'block';
+        }
+
+        function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+        function formatNumber(v){ if (!v && v!==0) return '—'; try { return Number(String(v).replace(/,/g,'')).toLocaleString(); } catch(e){ return v; } }
+
+        function openCountryCard(c){
+            // show a simple modal-like quick card using alert for now or populate compare box
+            const details = `Name: ${c.name}\nRegion: ${c.region}\nCapital: ${c.capital}\nPopulation: ${formatNumber(c.population)}\nGDP: ${formatNumber(c.gdp)}\nLanguages: ${c.languages}\nCities: ${c.important_cities}`;
+            if (confirm(details + '\n\nAdd to compare?')){
+                addToCompare(c);
+            }
+        }
+
+        // Compare helpers
+        function addToCompare(c){
+            if (compareSelection.find(x=>x.name===c.name)) return;
+            if (compareSelection.length>=4){ alert('Max 4 countries'); return; }
+            compareSelection.push(c);
+            renderCompare();
+        }
+
+        function renderCompare(){
+            const container = document.getElementById('selectedCountries');
+            const statsBody = document.getElementById('compareStats');
+            container.innerHTML = '';
+            statsBody.innerHTML = '';
+            if (!compareSelection.length){ container.innerHTML = '<div style="opacity:.8">No countries selected</div>'; return; }
+            compareSelection.forEach((c,idx)=>{
+                const card = document.createElement('div');
+                card.className = 'country-card';
+                card.innerHTML = `${escapeHtml(c.name)}<div style="font-size:0.8em;margin-top:6px;opacity:.9">${escapeHtml(c.region)}</div><div style="margin-top:6px"><button data-idx="${idx}">Remove</button></div>`;
+                card.querySelector('button').onclick = (e)=>{ compareSelection.splice(idx,1); renderCompare(); };
+                container.appendChild(card);
+            });
+
+            // build rows for each stat
+            const cols = compareSelection;
+            function tr(cells){ const r = document.createElement('tr'); cells.forEach(t=>{ const td = document.createElement('td'); td.innerHTML = t; r.appendChild(td); }); return r; }
+            // header row already exists; we append one row per country
+            cols.forEach(c=>{
+                statsBody.appendChild(tr([escapeHtml(c.name), formatNumber(c.population), formatNumber(c.gdp), escapeHtml(c.languages)]));
+            });
+        }
+
+        // Load data on startup
+        loadCSV();
+
+        // Hide results when clicking outside
+        document.addEventListener('click', (e)=>{
+            if (!resultsList.contains(e.target) && !searchBar.contains(e.target) && e.target !== globeContainer && !globeContainer.contains(e.target)){
+                resultsList.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>

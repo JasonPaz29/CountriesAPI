@@ -3,27 +3,32 @@ from .models import Country, db, Economy, City
 
 bp = Blueprint("api", __name__)
 
-@bp.route("/countries", methods=["GET"]) # working on a more efficient algorithim
-def get_countries_with_filters():
+def filter_countries(region=None, min_population=None, name=None, min_gdp=None):
     query = Country.query
     
-    region = request.args.get("region")
     if region:
         query = query.filter(Country.region.ilike("region")).all()
     
-    min_population = request.args.get("min_population")
     if min_population:
-        try:
-            min_population = int(min_population)
-            query = query.filter(Country.population >= min_population)
-        except ValueError:
-            return jsonify({"error": "min_population MUST be an integer."}), 400
-    name = request.args.get("name")
+        
+        query = query.filter(Country.population >= min_population)
+
     if name:
         query.filter(Country.name.ilike("name")).all()
-        
     
-    countries = query.all()
+    if min_gdp:
+        query = query.join(Economy).filter(Economy.gdp >= min_gdp)
+
+    return query.all()
+
+@bp.route("/countries", methods=["GET"]) # working on a more efficient algorithim
+def get_countries_with_filters():
+    region = request.args.get("region")
+    min_population = request.args.get("min_population", type=int)
+    name = request.args.get("name")
+    min_gdp = request.args.get("min_gdp", type=int)
+    
+    countries = filter_countries(region=region, min_population=min_population, name=name, min_gdp=min_gdp)
     
     return jsonify([c.to_dict() for c in countries])
 
@@ -36,12 +41,11 @@ def get_single_country(id):
     
     return jsonify({"error": "Country with that ID does not exist."}), 400
 
-#Trying to figure out Top 10 logic, with no AI at first.
 @bp.route("/countries/top_economies", methods=["GET"])
 def top_economies():
     query = Economy.query.order_by((Economy.gdp.desc()).limit(10)).all()
     
-    return jsonify(c.to_dict() for c in query)
+    return jsonify([c.to_dict() for c in query])
 
 @bp.route("/countries/<id>/cities", methods=["GET"])
 def get_country_cities(id):
@@ -52,3 +56,38 @@ def get_country_cities(id):
     
     return jsonify({"error": "Country with that ID does not exist"}), 400
     
+@bp.route("/countries/most_populated_countries", methods=['GET'])
+def populated_countries():
+    query = Country.query.order_by((Country.population.desc()).limit(15)).all()
+    
+    return jsonify([c.to_dict() for c in query])
+
+@bp.route('/countries/capital/<capital>', methods=['GET'])
+def countries_capital(capital):
+    query = Country.query.filter(Country.capital == capital).first()
+    
+    return jsonify([query.to_dict()])
+
+@bp.route('/countries/compare/<id1>/<id2>', methods=["GET"])
+def compare_countries(id1, id2):
+    query1 = Country.query.filter(Country.id == id1).first()
+    query2 = Country.query.filter(Country.id == id2).first()
+    
+    return jsonify([query1.to_dict_full(), query2.to_dict_full()])
+
+@bp.route('/countries/bottom_economies', methods="GET")
+def bottom_economies():
+    query = Economy.query.filter_by((Economy.gdp.asc()).limit(10)).all()
+    
+    return jsonify([c.to_dict() for c in query])
+#EXPAND THIS FUNCTION LATER
+@bp.route("/economies", methods=["GET"])
+def economies_with_filters():
+    query = Economy.query
+    
+    currency = request.args.get("currency")
+    
+    if currency:
+        query = query.filter(Economy.currency == currency).all()
+        
+    return jsonify([c.to_dict() for c in query])
