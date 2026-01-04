@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from sqlalchemy import func
 from .models import Country, db, Economy, City
 
 bp = Blueprint("api", __name__)
@@ -91,3 +92,26 @@ def economies_with_filters():
         query = query.filter(Economy.currency == currency).all()
         
     return jsonify([c.to_dict() for c in query])
+
+@bp.route('/economies/stats', method=['GET'])
+def economies_stats():
+    avg_gdp = db.session.query(func.avg(Economy.gdp)).scalar()
+    
+    region_avgs = (
+        db.session.query(Country.region, func.avg(Economy.gdp))
+        .join(Economy)
+        .group_by(Country.region)
+        .all()
+    )
+    richest_region = max(region_avgs, key=lambda x: x[1])
+
+    return jsonify({
+    "region_averages": {r: round(avg, 2) for r, avg in region_avgs},
+    "richest_region": {
+        "region": richest_region[0],
+        "average_gdp": round(richest_region[1], 2)
+    }
+})
+
+
+    

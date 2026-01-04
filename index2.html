@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<title> Countries API Frontend </title>
+    <h1> Countries API! </h1>
+    <h2>________________________</h2>
+    <body>
+        <!--Navigation section avaliable on all pages-->
+        
+        <h2> Tabs: </h2>
+        <nav>
+            <ul>
+                <li><a href = "home">Home Page/Search Countries</a> </li>
+                <li><a href = "functions">Applicable Functions</a> </li>
+                <li><a href = "compare">Compare Countries</a> </li>
+            </ul>
+        </nav>
+        
+        <!--Section for home page-->
+        
+        <div id = "home">
+        <h1> Home page for Countries API</h1>
+        <p>This section is the home page for the API and will have a search bar used to look up countries and specific data</p>
+            
+            <!--Image of map of world-->
+            <img src ="https://static.vecteezy.com/system/resources/previews/019/986/693/non_2x/world-map-background-with-country-name-free-vector.jpg" alt = "Image of Map of world to serve as background of home page" width = "500">
+            
+            <!--Dynamic Search Tab (not yet Dynamic, will make it dynamic using JavaScript Later)-->
+            <form> 
+                    <input type="text" name = "country" placeholder = "Enter Country Name" style = "width: 150px; height: 15px";>
+                    <button type = "search" style = "width: 60px; height: 20px; font-size: 14px; border: 1px solid black" >Search</button>
+                    
+            </form>
+            
+        </div>
+            
+        <!--Section for Applicable Functions Page (ToDo)-->    
+        <div id = "functions">
+        <h1> Applicable Functions for API </h1>
+        <p> This section lists all applicable functions for the Countries API</p>
+        
+        <ul>
+            <li>
+                <strong>get_populated_countries</strong> - Retrieve countries sorted by population
+                <!-- Sub-bullets with more details -->
+                <ul>
+                    <li><em>Description:</em> Get a list of countries ordered by population size</li>
+                    <li><em>Parameters:</em> sort_order (ascending/descending), limit (number of results)</li>
+                    <li><em>Example use:</em> Find the top 10 most populated countries</li>
+                </ul>
+            </li>
+            
+            <li>
+                <strong>get_countries_capital</strong> - Get capital cities for all countries
+                <!-- Paragraph method instead of sub-bullets -->
+                <p>Returns a complete list of all countries with their capital cities. Useful for creating dropdown menus or reference tables.</p>
+                <p><em>Returns:</em> Array of country-capital pairs</p>
+            </li>
+            
+            <li>
+                <strong>compare_countries</strong> - Compare statistics between two countries
+                <ul>
+                    <li><em>Description:</em> Side-by-side comparison of key metrics</li>
+                    <li><em>Parameters:</em> country1 (string), country2 (string)</li>
+                    <li><em>Returns:</em> HDI, population, economy type, language, capital for both countries</li>
+                    <li><em>Example use:</em> Compare Canada vs Japan economic indicators</li>
+                </ul>
+            </li>
+            
+            <li>
+                <strong>get_single_country</strong> - Get detailed data for one country
+                <ul>
+                    <li><em><p>Retrieve all available data for a specific country by name.</p></em></li>
+                    <li><p><em>Parameters:</em> country_name (string)</p></li>
+                    <li><p><em>Returns:</em> Complete country profile including economy type, language, HDI, population, and capital</p></li>
+                </ul>
+            </li>
+            
+            <li>
+                <strong>get_countries_with_filter</strong> - Filter countries by HDI, economy type, or language
+                <ul>
+                    <li><em>Description:</em> Search for countries matching specific criteria</li>
+                    <li><em>Parameters:</em> filter_type (HDI/economy/language), filter_value (the value to match)</li>
+                    <li><em>Example use:</em> Find all countries with "Developed" economy or HDI above 0.9</li>
+                </ul>
+            </li>
+        </ul>
+            
+            
+            
+        </div>
+            
+        <!-- Section for comparing two countries -->   
+        <h1> Compare Countries</h1>
+        <p> This page will allow you to compare the statistics of two countries of your choosing</p>
+        
+        <!-- input for first and second countries  -->   
+        <form> 
+                    <div>
+                        
+                    <h4> Country 1:</h4> 
+                    <input type="text" name = "country" placeholder = "Enter 1st Country Name" style = "width: 150px; height: 15px";>
+                    <h4> Country 2:</h4>
+                    <input type="text" name = "country" placeholder = "Enter 2nd Country Name" style = "width: 150px; height: 15px";>
+                    </div>
+                    
+                <button type = "Submit" style = "width: 80px; height: 20px; font-size: 14px; border: 1px solid black" >Compare</button>
+                    
+        </form>
+        
+        
+        
+        
+    </body>
