@@ -32,6 +32,39 @@ Data is structured using relational models, linking countries to regions, langua
 
 ---
 
+**Quick start**
+Activate the project venv:
+
+source .venv/bin/activate
+
+Install dependencies (if you don't already have them):
+
+# if you have a requirements.txt
+pip install -r requirements.txt
+
+# or install core deps manually
+pip install Flask Flask-SQLAlchemy Flask-Migrate flask-cors pandas gunicorn
+
+Run DB migrations and seed data:
+
+export FLASK_APP=app.py
+export FLASK_ENV=development
+flask db upgrade
+python seed_database.py
+
+Start the backend (example using gunicorn):
+
+gunicorn --bind 127.0.0.1:8000 "app:create_app()" --workers 3
+
+Serve the frontend and open in your browser:
+
+# from project root
+python3 -m http.server 8080
+# then open:
+http://127.0.0.1:8080/index(withAI).html
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Backend:** Flask (Python)  
