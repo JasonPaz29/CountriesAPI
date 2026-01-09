@@ -35,7 +35,7 @@ class Country(db.Model):
             "economy": self.economy.to_dict() if self.economy else None,
             "cities": [c.to_dict() for c in self.cities],
             "languages": [l.to_dict() for l in self.languages],
-            "humanIndex": self.index.to_dict() if self.index else None
+            "humanIndex": self.humanIndex.to_dict() if self.humanIndex else None
         }
 
 

@@ -1,376 +1,288 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>World Countries — (with AI) Frontend</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --accent:#1766d1; --glass: rgba(255,255,255,0.22); --glass-strong: rgba(255,255,255,0.85);
-      --bg:#0f1724; --muted:#9fb4d8;
+    :root{--bg:#071027;--muted:#9fb3cf;--accent:#7be495}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:var(--bg);color:#eaf2ff}
+    /* world-map background (public domain/svg) */
+    body{
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
     }
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Arial; background:var(--bg); color:#eaf2ff}
-  /* Background slideshow (7 wonders + world) */
-  .bg-wrap{position:fixed;inset:0;z-index:0;overflow:hidden}
-  .bg-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1200ms ease;filter:contrast(0.95) saturate(0.95)}
-  .bg-slide.show{opacity:1}
-  .overlay{position:fixed;inset:0;background:linear-gradient(180deg, rgba(6,10,20,0.35), rgba(6,10,20,0.6));z-index:1}
-
-  header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;position:relative;z-index:3}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#4fc3f7,#1976d2);box-shadow:0 6px 22px rgba(23,102,209,0.18)}
-    .nav{display:flex;gap:10px}
-    .nav a{color:var(--glass-strong);text-decoration:none;padding:8px 12px;border-radius:10px;font-weight:600}
-    .nav a.active{background:rgba(255,255,255,0.08);box-shadow:inset 0 -2px 0 rgba(255,255,255,0.02)}
-
-    /* Center hero search */
+    .overlay{position:fixed;inset:0;background:linear-gradient(180deg,rgba(6,10,20,0.35),rgba(6,10,20,0.6));z-index:1}
+  header{display:flex;align-items:center;justify-content:space-between;padding:12px 28px;position:relative;z-index:3;background:linear-gradient(90deg, rgba(0,0,0,0.25), rgba(0,0,0,0.15));backdrop-filter: blur(6px);border-bottom:1px solid rgba(255,255,255,0.03)}
+  .top-nav{display:flex;gap:8px;align-items:center}
+  .top-nav button{padding:6px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:var(--muted);cursor:pointer}
+  .top-nav button.active{background:var(--accent);color:#042018;font-weight:700}
   main{display:flex;align-items:center;justify-content:center;margin-top:6vh;position:relative;z-index:2}
-    .hero{width:min(1100px,94vw);display:grid;grid-template-columns:1fr;gap:18px}
-  .center-box{min-height:54vh;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:14px;padding:18px 20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));backdrop-filter: blur(6px);box-shadow:0 8px 28px rgba(2,6,23,0.6);position:relative;overflow:hidden;max-width:980px;margin-inline:auto}
-  .center-box .hero-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1200ms ease;filter:contrast(0.95) saturate(0.95)}
-  .center-box .hero-bg.show{opacity:1}
-  .center-box > .page{position:relative;z-index:2}
-
-    .search-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
-  .search-input{width:420px;max-width:86vw;display:flex;align-items:center;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.06);transition:all .18s ease}
-    .search-input.focus{background:rgba(255,255,255,0.92);color:#08306c}
-    .search-input input{flex:1;border:none;background:transparent;color:inherit;font-size:1.05rem;outline:none}
-    .search-actions{display:flex;gap:8px}
-    .btn{background:var(--glass);border:none;padding:8px 12px;border-radius:10px;color:var(--accent);font-weight:700;cursor:pointer}
-
-    /* Small tabs area for pages */
-    .page{display:none;padding:18px}
-    .page.active{display:block}
-
-    /* Functions list */
-    .functions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-    .fn-card{background:rgba(255,255,255,0.03);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-    .fn-card h3{margin:0 0 6px 0;color:var(--accent)}
-    .fn-meta{font-size:0.92rem;color:var(--muted)}
-
-    /* Compare layout */
-    .compare-outer{display:flex;flex-direction:column;gap:12px}
-    .compare-form{display:flex;gap:10px;align-items:center}
-    .compare-columns{display:grid;grid-template-columns:1fr 80px 1fr;gap:16px;align-items:start;margin-top:14px}
-    .country-panel{background:rgba(255,255,255,0.03);padding:14px;border-radius:12px;text-align:center}
-    .country-panel img{width:100%;height:160px;object-fit:cover;border-radius:10px}
-    .country-name{font-weight:700;margin-top:8px}
-    .stat-row{display:flex;justify-content:space-between;padding:8px 6px;border-bottom:1px dashed rgba(255,255,255,0.03)}
-    .stat-label{color:var(--muted)}
-    .middle-col{display:flex;flex-direction:column;gap:6px;justify-content:flex-start;align-items:center}
-    .cmp-symbol{font-size:1.25rem;font-weight:800;color:var(--accent)}
-
-    footer{margin-top:22px;padding:10px;text-align:center;color:var(--muted);font-size:0.95rem}
-
-    @media (max-width:880px){.compare-columns{grid-template-columns:1fr 60px 1fr;grid-auto-rows:auto}.country-panel img{height:120px}}
-    @media (max-width:680px){header{padding:12px} .search-input{width:92vw}}
+    .center-box{min-height:54vh;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:14px;padding:18px 20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));backdrop-filter: blur(6px);box-shadow:0 8px 28px rgba(2,6,23,0.6);position:relative;overflow:hidden;max-width:980px;margin-inline:auto}
+    .fn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;width:100%}
+    .fn-card{padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+    a { color: var(--accent) }
+    code { font-family:ui-monospace,Menlo,monospace; color:var(--muted) }
+  .site-footer{position:fixed;left:0;right:0;bottom:10px;text-align:center;color:var(--muted);z-index:4;font-size:0.95rem}
+  .site-footer .by{opacity:0.85;margin-top:4px;font-size:0.85rem}
   </style>
-  <!-- External libs (fuzzy + csv parsing) -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
 </head>
 <body>
-  <div class="bg-wrap"></div>
   <div class="overlay"></div>
-  <header>
-    <div class="brand"><div class="logo" aria-hidden></div><div>
-  <div style="font-weight:700">World Countries API</div>
-  <div style="font-size:0.82rem;color:var(--muted)">all data any country anytime</div>
-    </div></div>
-    <nav class="nav">
-      <a href="#home" id="tabHome" class="active">Home</a>
-      <a href="#functions" id="tabFunctions">Functions</a>
-      <a href="#compare" id="tabCompare">Compare</a>
-    </nav>
-  <div id="apiStatus" style="font-size:0.8rem;color:var(--muted);margin-left:12px">checking API…</div>
+    <header>
+    <div style="font-weight:700">World Countries API</div>
+    <div class="top-nav">
+      <button onclick="showPage('homePage')" id="tabHome">Home</button>
+      <button onclick="showPage('functionsPage')" id="tabFunctions">Functions</button>
+      <button onclick="showPage('comparePage')" id="tabCompare">Compare</button>
+    </div>
+    <div id="apiStatus" style="font-size:0.92rem;color:var(--muted)">checking API…</div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="center-box">
-        <div id="heroBg" class="hero-bg" aria-hidden></div>
-        <div id="homePage" class="page active">
-          <div class="search-wrap">
-            <div style="text-align:center;max-width:780px">
-              <h1 style="margin:6px 0 4px">Find country data instantly</h1>
-              <p style="margin:0;color:var(--muted)">Search for a country, view details, or compare two countries side-by-side.</p>
-            </div>
-
-            <div id="searchContainer" class="search-input" tabindex="0">
-              <input id="homeSearch" placeholder="Search country name or capital..." aria-label="Search countries" />
-              <div class="search-actions">
-                <button id="homeSearchBtn" class="btn">Search</button>
-              </div>
-            </div>
-
-            <div id="results" style="margin-top:8px;width:520px;max-width:92vw;display:none;background:var(--glass);border-radius:10px;padding:8px;color:#07306a;box-shadow:0 8px 30px rgba(2,6,23,0.6)"></div>
-
-            <div style="margin-top:12px;display:flex;gap:10px">
-              <button class="btn" id="gotoFunctions">Functions</button>
-              <button class="btn" id="gotoCompare">Compare</button>
-            </div>
-          </div>
-        </div>
-
-        <div id="functionsPage" class="page">
-          <h2 style="margin-top:0;color:var(--accent)">API Functions</h2>
-          <p style="color:var(--muted)">Below are the main endpoints you can use with this project's API. Each card shows a short description, parameters and an example.</p>
-          <div class="functions-grid" id="functionsGrid">
-            <!-- populated by JS -->
-          </div>
-        </div>
-
-        <div id="comparePage" class="page">
-          <h2 style="margin-top:0;color:var(--accent)">Compare Countries</h2>
-          <div class="compare-outer">
-            <div class="compare-form">
-              <input id="leftCountry" placeholder="First country name" style="padding:8px;border-radius:8px;border:none;width:260px" />
-              <input id="rightCountry" placeholder="Second country name" style="padding:8px;border-radius:8px;border:none;width:260px" />
-              <button id="doCompare" class="btn">Compare</button>
-            </div>
-
-            <div class="compare-columns">
-              <div class="country-panel" id="leftPanel">
-                <div style="opacity:.7">Left country</div>
-              </div>
-              <div class="middle-col" id="middleCol"></div>
-              <div class="country-panel" id="rightPanel">
-                <div style="opacity:.7">Right country</div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="center-box">
+      <div style="width:100%;display:flex;justify-content:flex-start;align-items:center;margin-bottom:12px">
+        <h2 style="margin:0">Explore</h2>
       </div>
-      <footer style="margin-top:12px">Created by Jason Paz-Romero and Sriram Joshi</footer>
+
+      <div id="homePage" class="page active" style="width:100%">
+        <div style="margin-bottom:10px;color:var(--muted)">Search countries (uses API when reachable)</div>
+        <div style="margin-bottom:15px;color:var(--muted)">Any Data, Any Country, Anytime</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input id="searchInput" placeholder="Search country name..." style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);width:380px" />
+          <button onclick="doSearch()">Search</button>
+        </div>
+        <div id="searchResults" style="margin-top:12px"></div>
+      </div>
+
+      <div id="functionsPage" class="page" style="display:none;width:100%">
+        <h3 style="margin-top:0">API Functions</h3>
+        <div id="functionsGrid" class="fn-grid"></div>
+      </div>
+
+      <div id="comparePage" class="page" style="display:none;width:100%">
+        <h3 style="margin-top:0">Compare Countries</h3>
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px">
+          <select id="compareA" style="padding:8px;border-radius:6px;background:#071027;color:#eaf2ff"></select>
+          <select id="compareB" style="padding:8px;border-radius:6px;background:#071027;color:#eaf2ff"></select>
+          <button onclick="doCompare()">Compare</button>
+        </div>
+        <div id="compareResults"></div>
+      </div>
     </div>
-  </section>
   </main>
 
+  <script>window.API_BASE = 'http://127.0.0.1:8000/api';</script>
   <script>
-    // Background slideshow images (7 wonders + world map). These are Unsplash / Wikimedia queries.
-    const bgImages = [
-      'https://images.unsplash.com/photo-1505765053071-1f07a3e2b5b9?q=80&w=2000&auto=format&fit=crop', // generic world
-      'https://images.unsplash.com/photo-1526481280698-6100eab21d2b?q=80&w=2000&auto=format&fit=crop', // Great Wall
-      'https://images.unsplash.com/photo-1549887534-1c3a1c2b0c12?q=80&w=2000&auto=format&fit=crop', // Petra (approx)
-      'https://images.unsplash.com/photo-1493558103817-58b2924bce98?q=80&w=2000&auto=format&fit=crop', // Christ the Redeemer
-      'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=2000&auto=format&fit=crop', // Machu Picchu
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2000&auto=format&fit=crop', // Chichen Itza
-      'https://images.unsplash.com/photo-1505765053071-1f07a3e2b5b9?q=80&w=2000&auto=format&fit=crop', // Colosseum (placeholder)
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/2000px-World_map_-_low_resolution.svg.png'
-    ];
-
-    // create slide elements
-    const bgWrap = document.querySelector('.bg-wrap');
-    const slides = [];
-    bgImages.forEach((src, i)=>{
-      const s = document.createElement('div'); s.className='bg-slide'; s.style.backgroundImage = `url('${src}')`;
-      if(i===0) s.classList.add('show');
-      bgWrap.appendChild(s); slides.push(s);
-    });
-
-    // Preload images and log load errors
-    let loadedCount = 0;
-    bgImages.forEach(u=>{ const im=new Image(); im.onload = ()=>{ loadedCount++; }; im.onerror = (e)=>{ console.warn('bg image failed', u, e); }; im.src = u; });
-
-    // Ensure at least one slide is visible after a short timeout if images are slow
-    setTimeout(()=>{ if(!slides.some(s=>s.classList.contains('show'))){ slides[0].classList.add('show'); } }, 500);
-
-    // Cycle slides every 10s
-    let current = 0;
-    setInterval(()=>{
-      const prev = current; current = (current+1) % slides.length; slides[prev].classList.remove('show'); slides[current].classList.add('show');
-    }, 10000);
-
-    // --- Hero-specific slideshow (shows inside the center-box on Home page)
-    const heroImages = [
-      'https://images.unsplash.com/photo-1526481280698-6100eab21d2b?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1493558103817-58b2924bce98?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1549887534-1c3a1c2b0c12?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1512813382941-6e1b38d7f5c0?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1505765053071-1f07a3e2b5b9?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1400&auto=format&fit=crop'
-    ];
-
-    const heroWrap = document.getElementById('heroBg'); const heroSlides = []; let heroIndex = 0; let heroTimer = null;
-    function startHeroSlideshow(){
-      if(heroTimer) return;
-      heroImages.forEach((src,i)=>{ const d=document.createElement('div'); d.className='hero-bg'; d.style.backgroundImage=`url('${src}')`; if(i===0) d.classList.add('show'); heroWrap.appendChild(d); heroSlides.push(d); const im=new Image(); im.src=src; });
-  heroTimer = setInterval(()=>{ const p = heroIndex; heroIndex = (heroIndex+1) % heroSlides.length; heroSlides[p].classList.remove('show'); heroSlides[heroIndex].classList.add('show'); }, 5000);
-    }
-    function stopHeroSlideshow(){ if(heroTimer){ clearInterval(heroTimer); heroTimer=null; } heroSlides.forEach(s=>s.remove()); heroSlides.length=0; heroIndex=0; }
-
-    // show/hide hero slideshow based on active page
-    const originalShowPage = showPage;
-    function showPage(id){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav a').forEach(a=>a.classList.remove('active')); if(id==='homePage') el('#tabHome').classList.add('active'); if(id==='functionsPage') el('#tabFunctions').classList.add('active'); if(id==='comparePage') el('#tabCompare').classList.add('active'); if(id==='homePage'){ startHeroSlideshow(); } else { stopHeroSlideshow(); } }
-
-    // start hero slideshow immediately on load (home page active)
-    startHeroSlideshow();
-
-    // --- App data + helpers
-    // Real endpoints from app/routes.py (blueprint registered at /api)
-    const functionsList = [
-      {id:'get_countries', title:'GET /api/countries', desc:'List countries with optional filters (region, min_population, name, min_gdp).', params:'region, min_population, name, min_gdp', example:'/api/countries?region=Europe&min_population=1000000'},
-      {id:'get_single_country', title:'GET /api/countries/<id>', desc:'Get a single country by numeric ID.', params:'id (integer)', example:'/api/countries/42'},
-      {id:'most_populated', title:'GET /api/countries/most_populated_countries', desc:'Top populated countries (limit ~15).', params:'none', example:'/api/countries/most_populated_countries'},
-      {id:'top_economies', title:'GET /api/countries/top_economies', desc:'Top economies by GDP.', params:'none', example:'/api/countries/top_economies'},
-      {id:'country_cities', title:'GET /api/countries/<id>/cities', desc:'Cities of a country (by country id).', params:'id (integer)', example:'/api/countries/42/cities'},
-      {id:'capital_lookup', title:'GET /api/countries/capital/<capital>', desc:'Find country by capital city name.', params:'capital (string)', example:'/api/countries/capital/Paris'},
-      {id:'compare_countries', title:'GET /api/countries/compare/<id1>/<id2>', desc:'Compare two countries by id (returns detailed profiles).', params:'id1, id2 (integers)', example:'/api/countries/compare/24/36'},
-      {id:'economies', title:'GET /api/economies', desc:'List economies with optional filters (currency).', params:'currency', example:'/api/economies?currency=USD'},
-      {id:'economies_stats', title:'GET /api/economies/stats', desc:'Aggregated economy stats (avg GDP, region averages).', params:'none', example:'/api/economies/stats'}
-    ];
-
-    function el(q){return document.querySelector(q)}
-    function showPage(id){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav a').forEach(a=>a.classList.remove('active')); if(id==='homePage') el('#tabHome').classList.add('active'); if(id==='functionsPage') el('#tabFunctions').classList.add('active'); if(id==='comparePage') el('#tabCompare').classList.add('active'); }
-
-    // hook navigation
-    el('#tabHome').addEventListener('click', e=>{ e.preventDefault(); showPage('homePage'); });
-    el('#tabFunctions').addEventListener('click', e=>{ e.preventDefault(); showPage('functionsPage'); });
-    el('#tabCompare').addEventListener('click', e=>{ e.preventDefault(); showPage('comparePage'); });
-    el('#gotoCompare').addEventListener('click', ()=> showPage('comparePage'));
-    el('#gotoFunctions').addEventListener('click', ()=> showPage('functionsPage'));
-
-    // render functions
-  function renderFunctions(){ const grid = el('#functionsGrid'); grid.innerHTML=''; functionsList.forEach(f=>{ const card = document.createElement('div'); card.className='fn-card'; const href = (apiEnabled ? (apiBase + f.example.replace('/api','')) : f.example); const exampleLink = `<a href="${href}" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">${href}</a>`; card.innerHTML = `<h3>${f.title}</h3><div class='fn-meta'>${f.desc}</div><div style='margin-top:8px;color:var(--muted)'><strong>Parameters:</strong> ${f.params}</div><div style='margin-top:8px;color:var(--muted)'><strong>Example:</strong> ${exampleLink}</div>`; grid.appendChild(card); }); }
-
-    // --- Load CSV data (client-side) and init Fuse
-    let countries = [], fuse = null;
-    function normalize(r){ return { name:r.name||r.country||r.Country||'', description:r.description||'', population: Number((r.population||r.Population||'')?.toString().replace(/,/g,''))||0, economy: r.economy||r.economy_type||r.Economy||'', hdi: Number(r.hdi||r.HDI)||null, languages: r.languages||r.language||'', capital: r.capital||'', raw:r } }
-
-    const apiBase = window.API_BASE || 'http://127.0.0.1:5000/api';
+    // configuration — can be overridden by setting window.API_BASE before this script runs
+    const apiBase = (window.API_BASE && window.API_BASE.replace(/\/+$/,'')) || 'http://127.0.0.1:5000/api';
     let apiEnabled = false;
 
-    async function checkApi(){
-      try{
-        const ctrl = new AbortController();
-        const t = setTimeout(()=>ctrl.abort(), 1500);
-        const res = await fetch(`${apiBase}/countries?name=United%20States`, {signal: ctrl.signal});
-        clearTimeout(t);
-    if(res.ok){ apiEnabled = true; console.log('API reachable at', apiBase); const st = document.getElementById('apiStatus'); if(st){ st.textContent = 'API: reachable'; st.style.color = '#7be495'; } }
-  }catch(e){ apiEnabled = false; console.log('API not reachable, falling back to CSV', e); const st = document.getElementById('apiStatus'); if(st){ st.textContent = 'API: offline (using CSV)'; st.style.color = '#f48fb1'; } }
-    }
+    // simple helpers
+    const el = (s)=>document.querySelector(s);
+    const setApiStatus = (text,color)=>{ const st = el('#apiStatus'); if(st){ st.textContent=text; st.style.color=color; } };
 
-    async function init(){
-      await checkApi();
-      renderFunctions();
-      loadCSV();
-    }
+    // functions list that mirrors backend endpoints
+    const functionsList = [
+      { title:'Search countries', example:'/api/countries?name=France', params:'name, region, min_population, min_gdp', desc:'Search countries with filters' },
+      { title:'Single country', example:'/api/countries/1', params:'id', desc:'Get a single country profile by id' },
+      { title:'Compare', example:'/api/countries/compare/1/2', params:'id1, id2', desc:'Compare two countries' },
+      { title:'Top economies', example:'/api/countries/top_economies', params:'limit', desc:'Top economies by GDP' },
+      { title:'Most populated', example:'/api/countries/most_populated_countries', params:'limit', desc:'Most populated countries' },
+      { title:'Country cities', example:'/api/countries/1/cities', params:'country_id', desc:'Cities for a country' },
+      { title:'Capital lookup', example:'/api/countries/capital/London', params:'capital', desc:'Find country by capital' },
+      { title:'Economies stats', example:'/api/economies/stats', params:'', desc:'Aggregated economy statistics' }
+    ];
 
-    function loadCSV(){ Papa.parse('countries_data.csv',{download:true,header:true,skipEmptyLines:true,complete(res){ countries = res.data.map(normalize); initFuse(); }, error(e){ console.warn('CSV load failed',e); } }); }
-
-    function initFuse(){ fuse = new Fuse(countries, { keys:['name','capital','languages','economy'], threshold:0.35 }); }
-
-    // search UI
-    const homeSearch = el('#homeSearch'); const resultsBox = el('#results'); const searchContainer = el('#searchContainer');
-    searchContainer.addEventListener('focusin', ()=> searchContainer.classList.add('focus'));
-    searchContainer.addEventListener('focusout', ()=> searchContainer.classList.remove('focus'));
-    function showResults(list){ if(!list||!list.length){ resultsBox.style.display='block'; resultsBox.innerHTML='<div style="padding:8px;color:#013067">No results</div>'; return;} resultsBox.innerHTML=''; list.slice(0,20).forEach(c=>{ const d=document.createElement('div'); d.style.padding='8px'; d.style.cursor='pointer'; d.style.borderBottom='1px solid rgba(0,0,0,0.04)'; d.innerHTML=`<strong style='color:#053a83'>${c.name}</strong> <div style='color:var(--muted);font-size:0.92rem'>${c.capital?c.capital+' • ':''}${c.economy}</div>`; d.onclick = ()=> showCountryModal(c); resultsBox.appendChild(d); }); resultsBox.style.display='block'; }
-
-    async function doSearch(q){
-      if(!q||!q.trim()){ resultsBox.style.display='none'; return; }
-      // If API available, prefer it
-      if(apiEnabled){
-        try{
-          const res = await fetch(`${apiBase}/countries?name=${encodeURIComponent(q)}`);
-          if(res.ok){
-            const data = await res.json();
-            // API returns array of country objects; normalize for UI
-            const list = (Array.isArray(data) ? data : []).map(c=>({ name: c.name || c.country || '', capital: c.capital || '', economy: (c.economy || (c.economy_type||'')), population: c.population || c.population || 0, raw: c }));
-            showResults(list);
-            return;
-          }
-        }catch(e){ console.warn('API search failed, falling back to local search', e); }
-      }
-      if(!fuse) return;
-      const r = fuse.search(q,{limit:30}).map(x=>x.item);
-      showResults(r);
-    }
-    homeSearch.addEventListener('input', e=> doSearch(e.target.value)); el('#homeSearchBtn').addEventListener('click', ()=> doSearch(homeSearch.value));
-
-    function showCountryModal(c){ // simple details in an alert for now
-      const txt = `Name: ${c.name}\nCapital: ${c.capital}\nPopulation: ${c.population?c.population.toLocaleString():'—'}\nEconomy: ${c.economy}\nHDI: ${c.hdi||'—'}`;
-      if(confirm(txt + '\n\nAdd to left? OK = left, Cancel = right')){ fillPanel('left', c); } else { fillPanel('right', c); }
-    }
-
-    // Compare behavior
-    el('#doCompare').addEventListener('click', async ()=>{
-      const a = el('#leftCountry').value.trim(); const b = el('#rightCountry').value.trim(); if(!a || !b) { alert('Enter both country names'); return; }
-      // If API available, try resolving names via API and use compare endpoint (which expects ids)
-      if(apiEnabled){
-        try{
-          const ra = await fetch(`${apiBase}/countries?name=${encodeURIComponent(a)}`);
-          const rb = await fetch(`${apiBase}/countries?name=${encodeURIComponent(b)}`);
-          if(ra.ok && rb.ok){
-            const da = await ra.json(); const db = await rb.json();
-            const leftRec = Array.isArray(da)&&da.length?da[0]:null; const rightRec = Array.isArray(db)&&db.length?db[0]:null;
-            if(leftRec && rightRec && leftRec.id != null && rightRec.id != null){
-              // call compare endpoint
-              const compRes = await fetch(`${apiBase}/countries/compare/${leftRec.id}/${rightRec.id}`);
-              if(compRes.ok){
-                const compData = await compRes.json();
-                // compData expected [leftFull,rightFull]
-                const L = compData[0]; const R = compData[1];
-                fillPanel('left', normalize(L)); fillPanel('right', normalize(R)); renderComparison(normalize(L), normalize(R));
-                return;
-              }
-            }
-            // If API didn't provide ids or compare failed, fall back to using first-match details
-            if(leftRec) fillPanel('left', normalize(leftRec));
-            if(rightRec) fillPanel('right', normalize(rightRec));
-            renderComparison(normalize(leftRec||{}), normalize(rightRec||{}));
-            return;
-          }
-        }catch(e){ console.warn('API compare failed, falling back to local compare', e); }
-      }
-      // fallback local
-      const left = findCountryByName(a); const right = findCountryByName(b);
-      if(!left||!right){ alert('Could not resolve one or both countries from dataset. Try different spellings.'); return; }
-      fillPanel('left', left); fillPanel('right', right); renderComparison(left,right);
-    });
-
-    function findCountryByName(name){ if(!name) return null; if(!fuse) return null; const r = fuse.search(name,{limit:8}).map(x=>x.item); if(!r||!r.length) return null; // prefer exact-ish
-      const exact = r.find(x=>x.name.toLowerCase()===name.toLowerCase()); return exact||r[0]; }
-
-    function fillPanel(side, c){ const panel = el(side==='left'?'#leftPanel':'#rightPanel'); panel.innerHTML = '';
-      const img = document.createElement('img'); // use unsplash with capital query
-      const query = encodeURIComponent(c.capital || c.name);
-      img.src = `https://source.unsplash.com/800x400/?${query},city,landmark`;
-      img.alt = c.capital || c.name;
-      panel.appendChild(img);
-      const title = document.createElement('div'); title.className='country-name'; title.textContent = c.name; panel.appendChild(title);
-      const table = document.createElement('div'); table.style.marginTop='10px';
-      const fields = [ ['Description', c.description||'—'], ['Capital city', c.capital||'—'], ['Population', c.population?c.population.toLocaleString():'—'], ['Economy type', c.economy||'—'], ['HDI', c.hdi||'—'], ['Language(s)', c.languages||'—'] ];
-      fields.forEach(f=>{ const row = document.createElement('div'); row.className='stat-row'; row.innerHTML = `<div class='stat-label'>${f[0]}</div><div style='font-weight:700'>${f[1]}</div>`; table.appendChild(row); });
-      panel.appendChild(table);
-    }
-
-    function renderComparison(l,r){ const middle = el('#middleCol'); middle.innerHTML=''; const numericPairs = [ ['Population', l.population||0, r.population||0], ['HDI', l.hdi||0, r.hdi||0] ];
-      // populate middle column for both numeric and blanks for non-numeric
-      // top gap
-      const labels = ['Description','Capital city','Population','Economy type','HDI','Language(s)'];
-      // create symbol rows
-      labels.forEach((label,idx)=>{
-        const simp = document.createElement('div'); simp.style.minHeight='44px'; simp.style.display='flex'; simp.style.alignItems='center'; simp.style.justifyContent='center'; simp.style.width='100%'; simp.style.padding='6px'; simp.style.color='var(--muted)';
-        if(label==='Population'){ simp.innerHTML = compareSymbol(l.population||0, r.population||0); }
-        else if(label==='HDI'){ simp.innerHTML = compareSymbol(l.hdi||0, r.hdi||0); }
-        else { simp.innerHTML = '&nbsp;'; }
-        middle.appendChild(simp);
+    // render functions — clickable absolute API links only when API reachable
+    function renderFunctions(){
+      const grid = el('#functionsGrid'); grid.innerHTML='';
+      functionsList.forEach(f=>{
+        const card = document.createElement('div'); card.className='fn-card';
+        let exampleHTML;
+        if(apiEnabled){
+          // build absolute url for clickable example
+          const abs = apiBase + f.example.replace(/^\/api/,'');
+          exampleHTML = `<a href="${abs}" target="_blank" rel="noopener">${abs}</a>`;
+        } else {
+          exampleHTML = `<code>${f.example}</code>`;
+        }
+        card.innerHTML = `<h4 style="margin:6px 0">${f.title}</h4><div style="color:var(--muted)">${f.desc}</div><div style="margin-top:8px;color:var(--muted)"><strong>Params:</strong> ${f.params || '—'}</div><div style="margin-top:8px"><strong>Example:</strong> ${exampleHTML}</div>`;
+        grid.appendChild(card);
       });
     }
 
-    function compareSymbol(a,b){ if(a==null||b==null) return '&nbsp;'; if(Number(a) > Number(b)) return '&gt;'; if(Number(a) < Number(b)) return '&lt;'; return '='; }
+    // populate compare select inputs with countries (simple load)
+    async function populateCompareSelects(){
+      try{
+        const r = await fetch(apiBase + '/countries?name=');
+        const data = await r.json();
+        const selA = el('#compareA'); const selB = el('#compareB');
+        if(!selA || !selB) return;
+        selA.innerHTML = '<option value="">Select country A</option>';
+        selB.innerHTML = '<option value="">Select country B</option>';
+        data.forEach(c=>{
+          const optA = document.createElement('option'); optA.value=c.id; optA.textContent=c.name; selA.appendChild(optA);
+          const optB = document.createElement('option'); optB.value=c.id; optB.textContent=c.name; selB.appendChild(optB);
+        });
+      }catch(e){ /* ignore */ }
+    }
 
-    // helper to fill by search selection
-    window.fillPanel = fillPanel; // expose for modal
+    async function doCompare(){
+      const a = el('#compareA').value; const b = el('#compareB').value;
+      if(!a || !b){ el('#compareResults').textContent='Please select two countries.'; return; }
+      el('#compareResults').textContent='Comparing...';
+      try{
+        const r = await fetch(apiBase + '/countries/compare/' + a + '/' + b);
+        if(!r.ok) { el('#compareResults').textContent='Compare failed'; return; }
+        const arr = await r.json();
+        // render side-by-side table
+        const left = arr[0], right = arr[1];
+        el('#compareResults').innerHTML = renderCompareTable(left, right);
+      }catch(e){ el('#compareResults').textContent='Compare error: '+ (e.message||e); }
+    }
 
-    // initialize
-    init();
+    function renderCompareTable(l, r){
+      const rows = [
+        ['Name', l.name, r.name],
+        ['Capital', l.capital, r.capital],
+        ['Population', l.population?.toLocaleString(), r.population?.toLocaleString()],
+        ['Region', l.region, r.region],
+        ['GDP (billion)', (l.economy?.gdp||'—'), (r.economy?.gdp||'—')],
+        ['Currency', (l.economy?.currency||'—'), (r.economy?.currency||'—')],
+        ['HDI', (l.humanIndex?.index||'—'), (r.humanIndex?.index||'—')]
+      ];
+      const head = `<table style="width:100%;border-collapse:collapse"><thead><tr><th style='text-align:left;padding:8px'></th><th style='padding:8px'>A</th><th style='padding:8px'>B</th></tr></thead>`;
+      const body = rows.map(row=>`<tr><td style='padding:8px;font-weight:600'>${row[0]}</td><td style='padding:8px'>${row[1]??'—'}</td><td style='padding:8px'>${row[2]??'—'}</td></tr>`).join('');
+      return head + '<tbody>' + body + '</tbody></table>';
+    }
+
+    // basic API reachability check with timeout
+    async function checkApi(timeoutMs=1500){
+      const controller = new AbortController();
+      const id = setTimeout(()=>controller.abort(), timeoutMs);
+      try{
+        const resp = await fetch(apiBase + '/countries?name=', { signal: controller.signal });
+        if(resp.ok){
+          apiEnabled = true;
+          setApiStatus('API: reachable', 'var(--accent)');
+        } else {
+          apiEnabled = false;
+          setApiStatus('API: offline (using CSV)', 'var(--muted)');
+        }
+      }catch(e){
+        apiEnabled = false;
+        setApiStatus('API: offline (using CSV)', 'var(--muted)');
+      }finally{ clearTimeout(id); renderFunctions(); }
+    }
+
+    // simple search that prefers API when available, otherwise will fallback to client CSV (not included here)
+    async function doSearch(){
+      const q = el('#searchInput').value.trim();
+      el('#searchResults').textContent = 'Searching...';
+      try{
+        if(apiEnabled){
+          const r = await fetch(apiBase + '/countries?name=' + encodeURIComponent(q));
+          const data = await r.json();
+          if(!data.length){ el('#searchResults').innerHTML = '<div style="color:var(--muted)">No results</div>'; return; }
+          // take the first match and fetch richer details from auxiliary endpoints
+          const country = data[0];
+          const extras = await fetchCountryExtras(country.id);
+          el('#searchResults').innerHTML = renderDetailsTable(country, extras);
+        } else {
+          el('#searchResults').innerHTML = '<div style="color:var(--muted)">CSV fallback not loaded in this version — start with API enabled.</div>';
+        }
+      }catch(err){
+        el('#searchResults').textContent = 'Search failed: ' + (err.message || err);
+      }
+    }
+
+    // fetch additional data: development, cities, languages and economy
+    async function fetchCountryExtras(id){
+      try{
+        const [devResp, citiesResp, langsResp, econResp] = await Promise.all([
+          fetch(apiBase + '/countries/' + id + '/development'),
+          fetch(apiBase + '/countries/' + id + '/cities'),
+          fetch(apiBase + '/languages'),
+          fetch(apiBase + '/economies')
+        ]);
+        const dev = devResp.ok ? await devResp.json() : null;
+        const cities = citiesResp.ok ? await citiesResp.json() : [];
+        const langsAll = langsResp.ok ? await langsResp.json() : [];
+        // languages endpoint returns language objects with countries (ids)
+        const languages = langsAll.filter(l=> (l.countries || []).includes(id));
+        const economies = econResp.ok ? await econResp.json() : [];
+        const economy = economies.find(e=> e.country_id === id) || null;
+        return { dev, cities, languages, economy };
+      }catch(e){ return { dev:null, cities:[], languages:[], economy:null }; }
+    }
+
+    function renderDetailsTable(country, extras){
+      const lang = extras.languages && extras.languages.length ? extras.languages[0].name : '—';
+      const hdi = extras.dev && extras.dev.index != null ? extras.dev.index : '—';
+      const devClass = extras.dev && extras.dev.development_class ? extras.dev.development_class : '—';
+      const gdp = extras.economy && extras.economy.gdp != null ? extras.economy.gdp : '—';
+      const currency = extras.economy && extras.economy.currency ? extras.economy.currency : '—';
+      const cities = extras.cities && extras.cities.length ? extras.cities.map(c=>c.name).join(', ') : '—';
+
+      return `
+        <div style="margin-top:8px">
+          <h3 style="margin:6px 0">${country.name}</h3>
+          <table style="width:100%;border-collapse:collapse;color:#eaf2ff">
+            <tr><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03);font-weight:600">Capital</td><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03)">${country.capital || '—'}</td></tr>
+            <tr><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03);font-weight:600">Main language</td><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03)">${lang}</td></tr>
+            <tr><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03);font-weight:600">Human Development Index (HDI)</td><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03)">${hdi}</td></tr>
+            <tr><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03);font-weight:600">Development class</td><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03)">${devClass}</td></tr>
+            <tr><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03);font-weight:600">GDP (billion USD)</td><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03)">${gdp}</td></tr>
+            <tr><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03);font-weight:600">Currency</td><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03)">${currency}</td></tr>
+            <tr><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03);font-weight:600">Population</td><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03)">${country.population.toLocaleString()}</td></tr>
+            <tr><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03);font-weight:600">Region</td><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03)">${country.region}</td></tr>
+            <tr><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03);font-weight:600">Major cities</td><td style="padding:6px 8px;border-top:1px solid rgba(255,255,255,0.03)">${cities}</td></tr>
+          </table>
+        </div>
+      `;
+    }
+
+    // page + hero slideshow control (single canonical showPage)
+    let heroTimer = null;
+    function startHeroSlideshow(){
+      stopHeroSlideshow();
+      heroTimer = setInterval(()=>{/* placeholder for slideshow tick */}, 5000);
+    }
+    function stopHeroSlideshow(){ if(heroTimer){ clearInterval(heroTimer); heroTimer = null; } }
+
+    function showPage(id){
+      document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+      const pg = document.getElementById(id);
+      if(pg){ pg.style.display='block'; }
+      // start hero only on home
+      if(id === 'homePage') startHeroSlideshow(); else stopHeroSlideshow();
+  // expand center box for functions page to show more content
+  const cb = document.querySelector('.center-box');
+  if(id === 'functionsPage'){ cb.style.maxWidth = '1200px'; cb.style.minHeight='72vh'; } else { cb.style.maxWidth='980px'; cb.style.minHeight='54vh'; }
+      // tab button active state (simple)
+      document.querySelectorAll('header button, header div button').forEach(b=>b.classList.remove('active'));
+      const btn = document.querySelector(`#tab${id==='homePage'?'Home':'Functions'}`);
+      if(btn) btn.classList.add('active');
+  if(id === 'comparePage'){ populateCompareSelects(); }
+    }
+
+    // init
+    (function init(){
+      renderFunctions();
+      checkApi();
+      showPage('homePage');
+    })();
   </script>
+  <div class="site-footer">
+    <div class="tagline">Explore the world!</div>
+    <div class="by">Created by Jason Paz-Romero and Sriram Joshi</div>
+  </div>
 </body>
 </html>
