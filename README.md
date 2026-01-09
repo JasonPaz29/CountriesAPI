@@ -32,8 +32,7 @@ Data is structured using relational models, linking countries to regions, langua
 
 ---
 
-**Quick start**
-Activate the project venv:
+Quick start Activate the project venv:
 
 source .venv/bin/activate
 
